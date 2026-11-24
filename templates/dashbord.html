@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0">Dashboard Hasil Prediksi & Rekomendasi</h4>
+    <div>
+        <a href="{% url 'export_excel' %}" class="btn btn-success btn-sm">Unduh Excel</a>
+        <button onclick="window.print()" class="btn btn-danger btn-sm">Unduh / Cetak PDF</button>
+    </div>
+</div>
+
+<!-- Panel Transparansi Feature Engineering -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <span class="badge bg-info text-dark mb-2">Feature Engineering 1</span>
+                <h6 class="text-muted">Debt-to-Income Ratio (DTI)</h6>
+                <h3 class="fw-bold">{{ hasil.dti_ratio }}%</h3>
+                <small class="text-muted">Batas aman maksimal: 30%</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <span class="badge bg-info text-dark mb-2">Feature Engineering 2</span>
+                <h6 class="text-muted">Disposable Income (Sisa Kas)</h6>
+                <h3 class="fw-bold">Rp {{ hasil.disposable_income|floatformat:0 }}</h3>
+                <small class="text-muted">Expense Ratio: {{ hasil.eir_ratio }}%</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <span class="badge bg-warning text-dark mb-2">Komparasi 2 Model ML</span>
+                <div class="d-flex justify-content-between mt-1">
+                    <span><strong>Random Forest:</strong> {{ hasil.risiko_rf }}</span>
+                    <span class="badge bg-secondary">{{ hasil.prob_rf }}%</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span><strong>XGBoost:</strong> {{ hasil.risiko_xgb }}</span>
+                    <span class="badge bg-secondary">{{ hasil.prob_xgb }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Rekomendasi Anggaran & Saran -->
+<div class="alert alert-primary border-0 shadow-sm mb-4">
+    <h6 class="fw-bold mb-1">Rekomendasi Strategi ML:</h6>
+    <p class="mb-2">{{ hasil.saran_teks }}</p>
+    <small><strong>Saran Alokasi:</strong> Cicilan Rp {{ hasil.rekomendasi_cicilan|floatformat:0 }} | Kebutuhan Rp {{ hasil.rekomendasi_kebutuhan|floatformat:0 }} | Dana Cadangan Rp {{ hasil.rekomendasi_tabungan|floatformat:0 }}</small>
+</div>
+
+<!-- Grafik Chart.js -->
+<div class="row g-3">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm p-3">
+            <h6 class="fw-bold">Proyeksi Penurunan Sisa Hutang</h6>
+            <canvas id="debtChart" height="120"></canvas>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm p-3">
+            <h6 class="fw-bold">Alokasi Pemasukan Bulanan</h6>
+            <canvas id="budgetChart" height="220"></canvas>
+        </div>
+    </div>
+</div>
+
+{{ hasil.chart_data|json_script:"chart-data" }}
+<script src="{% static 'js/charts.js' %}"></script>
+{% endblock %}

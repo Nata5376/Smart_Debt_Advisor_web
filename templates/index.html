@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-1">Analisis Kelayakan & Pelunasan Hutang</h4>
+                <p class="text-muted small mb-4">Masukkan data finansial Anda untuk diproses oleh Feature Engineering & Multi-Model ML.</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Pemasukan per Bulan (Rp)</label>
+                        <input type="number" name="pemasukan" class="form-control" value="3000000" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Total Hutang (Rp)</label>
+                        <input type="number" name="total_hutang" class="form-control" value="10000000" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Tenor Pembayaran (Bulan)</label>
+                            <input type="number" name="tenor_bulan" class="form-control" value="12" min="1" max="60" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Pengeluaran Pokok / Bln (Rp)</label>
+                            <input type="number" name="pengeluaran_pokok" class="form-control" value="1500000" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Tanggal Jatuh Tempo Cicilan (1-31)</label>
+                        <input type="number" name="tanggal_jatuh_tempo" class="form-control" value="25" min="1" max="31" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Jalankan Prediksi Machine Learning</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

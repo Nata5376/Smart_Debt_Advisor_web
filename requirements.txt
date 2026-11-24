@@ -1,0 +1,11 @@
+Django
+psycopg[binary]
+python-dotenv
+whitenoise
+numpy
+pandas
+scikit-learn
+xgboost
+joblib
+openpyxl
+xhtml2pdf

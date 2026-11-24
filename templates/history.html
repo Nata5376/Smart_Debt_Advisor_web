@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4 class="fw-bold mb-3">Pelacakan Riwayat & Pengingat Jadwal</h4>
+
+{% if butuh_reminder %}
+<div class="alert alert-danger shadow-sm">
+    <strong>Pengingat Jatuh Tempo!</strong> Cicilan hutang bulanan Anda jatuh tempo pada tanggal <strong>{{ jatuh_tempo }}</strong> bulan ini. Segera sisihkan dana cicilan Anda.
+</div>
+{% else %}
+<div class="alert alert-success shadow-sm">
+    Jadwal jatuh tempo berikutnya adalah tanggal <strong>{{ jatuh_tempo }}</strong> setiap bulan.
+</div>
+{% endif %}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        {% if hasil %}
+            <p class="mb-1"><strong>Total Hutang Tercatat:</strong> Rp {{ hasil.input.total_hutang|floatformat:0 }}</p>
+            <p class="mb-1"><strong>Tenor:</strong> {{ hasil.input.tenor_bulan }} Bulan</p>
+            <p class="mb-0"><strong>Status Prediksi Risiko:</strong> {{ hasil.risiko_xgb }}</p>
+        {% else %}
+            <p class="text-muted mb-0">Belum ada simulasi tersimpan. Silakan buat simulasi baru terlebih dahulu.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
